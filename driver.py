@@ -2,8 +2,14 @@ import sys
 import os 
 import pandas as pd
 sys.path.append(os.path.abspath('scripts'))
-from get_data import retrieve
+import get_data as gd
+import formatting_data as fd
 
-retrieve('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv', "data_corona.csv", "raw_data")
-df = pd.read_csv("raw_data/data_sars.csv", error_bad_lines=False)
-print(df)
+def main():
+    data_frames ={}
+    for arg in sys.argv[1:]:
+        data_frames[gd.get_name(arg)] = gd.retrieve(arg, gd.get_name(arg), "raw_data")
+    for data_frame in data_frames:
+       fd.format_sars(data_frames[data_frame])
+
+main()
