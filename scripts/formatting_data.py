@@ -22,20 +22,23 @@ def draw_graph(plots, title):
     plt.ylabel("", fontsize=20)
     plt.tick_params(axis='both', which='major', labelsize=10)
     save_filename = title
-    plt.savefig('output/' + save_filename, bbox_inches='tight')
+    plt.savefig('output/SARS/' + save_filename, bbox_inches='tight')
 
 
 def get_top10(data_frame, parameter):
     data_frame = data_frame.sort_values(by = ["Date", parameter], ascending=False)
     return data_frame["Country"].tolist()[:10]
 
-def format_sars(data_frame):
+def format_sars(data_frame, region):
     print("Countries with most cases of SARS:")
     cases = "Cumulative number of case(s)"
     top10 = get_top10(data_frame, cases)
     for country in top10:
         print(f"- {country}")
-    data_frame = data_frame.loc[data_frame["Country"]=="China"]
+    data_frame = data_frame.loc[data_frame["Country"]==region]
     plots = (data_frame["Date"],"Dates", data_frame[cases],
                data_frame["Number of deaths"], "Cases and deaths")
-    draw_graph(plots, "Cases of SARS in China")
+    draw_graph(plots, f"Cases of SARS in {region}")
+
+
+def format_mers(data_frame):
