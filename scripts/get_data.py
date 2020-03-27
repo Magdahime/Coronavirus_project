@@ -17,3 +17,8 @@ def retrieve(sourceFile, name, destinationFolder):
 def get_name(url):
     result = re.search("data_[a-z]*\.csv", url)
     return url[result.start():]
+
+def get_key(keys_list, disease):
+    for key in keys_list:
+        if re.search(f"{disease}", key):
+            return key

@@ -1,0 +1,4 @@
+https://raw.githubusercontent.com/Magdahime/Coronavirus_project/master/raw_data/data_coronacases.csv
+https://raw.githubusercontent.com/Magdahime/Coronavirus_project/master/raw_data/data_coronadeaths.csv
+https://raw.githubusercontent.com/Magdahime/Coronavirus_project/master/raw_data/data_sars.csv
+https://raw.githubusercontent.com/Magdahime/Coronavirus_project/master/raw_data/data_swineflu.csv

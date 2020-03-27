@@ -1,8 +1,22 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import re
 
+def get_rows(data_frame, top10):
+    
+    cases_list =[]
+    for region in top10:
+        new_data_frame = data_frame.loc[data_frame["Country/Region"]==region]
+        formatteddf = new_data_frame.groupby(by='Country/Region').sum()
+        cases_list.append(formatteddf.loc[region].tolist())
+    
+    return cases_list
 
+def get_dates(data_frame):
+    
+    return data_frame.columns.tolist()[1:]
+    
 def draw_graph(plots, title, disease, ticks):
     x_axis, x_axis_name, y1_axis, y2_axis, y_axis_name = plots
     plt.style.use('seaborn')
@@ -19,7 +33,7 @@ def draw_graph(plots, title, disease, ticks):
     plt.title(title, fontsize=24)
     plt.xlabel(x_axis_name, fontsize=20)
     fig.autofmt_xdate()
-    plt.ylabel("", fontsize=20)
+    plt.ylabel(y_axis_name, fontsize=20)
     plt.yscale(value="log")
     plt.tick_params(axis='both', which='major', labelsize=10)
     save_filename = title
@@ -54,3 +68,17 @@ def format_sars(data_frame):
         format_data(data_frame, region, "SARS", dates,
                     cases, "Number of deaths", 7)
 
+
+def format_corona(data_frames):
+    data_frame_c, data_frame_d = data_frames
+    data_frame_c = data_frame_c.drop(["Province/State", "Lat", "Long"], axis="columns")
+    data_frame_d = data_frame_d.drop(["Province/State", "Lat", "Long"], axis="columns")
+    dates = get_dates(data_frame_c)
+    last_date = dates[-1]
+    top10 = data_frame_c.sort_values(by = last_date, ascending = False)["Country/Region"].head(10).tolist()
+    deaths = get_rows(data_frame_d, top10)
+    cases = get_rows(data_frame_c, top10)
+    for country in range(len(top10)):
+        plots = ((dates, "Dates", cases[country],
+               deaths[country], "Cases and deaths"))
+        draw_graph(plots, f"Cases of COVID-19 in {top10[country]}","COVID-19",7)
